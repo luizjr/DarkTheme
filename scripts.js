@@ -32,3 +32,33 @@ const changeColors = (colors) => {
 checkbox.addEventListener("change", ({target}) => {
     target.checked ? changeColors(darkMode) : changeColors(initialColors)
 })
+
+const isExistLocalStorage = (key) => 
+  localStorage.getItem(key) != null
+
+const createOrEditLocalStorage = (key, value) => 
+  localStorage.setItem(key, JSON.stringify(value))
+
+const getValeuLocalStorage = (key) =>
+  JSON.parse(localStorage.getItem(key))
+
+checkbox.addEventListener("change", ({target}) => {
+  if (target.checked) {
+    changeColors(darkMode) 
+    createOrEditLocalStorage('mode','darkMode')
+  } else {
+    changeColors(initialColors)
+    createOrEditLocalStorage('mode','initialColors')
+  }
+})
+
+if(!isExistLocalStorage('mode'))
+  createOrEditLocalStorage('mode', 'initialColors')
+
+if (getValeuLocalStorage('mode') === "initialColors") {
+  checkbox.removeAttribute('checked')
+  changeColors(initialColors);
+} else {
+  checkbox.setAttribute('checked', "")
+  changeColors(darkMode);
+}
